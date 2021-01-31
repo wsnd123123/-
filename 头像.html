@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>个人信息修改</title>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript">
+    function clear(){
+     $("#file").remove();
+     $('#myform').prepend("<input type=\"file\" id=\"file\" name=\"file\"/>");
+       $.imageFileVisible({ wrapSelector: "#image-wrap1",
+                fileSelector: "#file",
+                width: 300,
+                height: 300
+            });
+    }
+    //图片显示插件
+        (function ($) {
+            $.imageFileVisible = function (options) {
+                // 默认选项
+                var defaults = {
+                    //包裹图片的元素
+                    wrapSelector: null,
+                    //<input type=file />元素
+                    fileSelector: null,
+                    width: '100%',
+                    height: 'auto',
+                    errorMessage: "不是图片"
+                };
+                // Extend our default options with those provided.
+                var opts = $.extend(defaults, options);
+                $(opts.fileSelector).on("change", function () {
+                     $("#image-wrap1").empty();
+                    var file = this.files[0];
+                    var imageType = /image.*/;
+                    if(file.size>1024*500){
+                     alert("请上传小于512k的图片");
+                     clear();
+                     return;
+                     }
+                    if (file.type.match(imageType)) {
+                        var reader = new FileReader();
+                        reader.onload = function () {
+                            var img = new Image();
+                            img.src = reader.result;
+                            $(img).width(opts.width);
+                            $(img).height(opts.height);
+                            $(opts.wrapSelector).append(img);
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        clear();
+                        alert(opts.errorMessage);
+                    }
+                });
+            };
+        })(jQuery);
+    $(document).ready(
+    function(e){
+//图片显示插件
+if (typeof FileReader == 'undefined')
+                        $("#destination").css({'background': 'none'}).
+                        html('亲,您的浏览器还不支持HTML5的FileReader接口,无法使用图片本地预览,请更新浏览器获得最好体验');
+            $.imageFileVisible({ wrapSelector: "#image-wrap1",
+                fileSelector: "#file",
+                width: 300,
+                height: 300
+            });
+ 
+    //获取展示的usr信息
+    $.ajax({
+    //访问地址
+    url: "/login",
+    //访问方式，一般有GET或POST两种
+    type: 'GET',
+    //返回的数据格式，这个是可选参数，jquery回默认判断返回参数的类型
+    dataType: 'json'
+    })
+    //成功后的处理函数,res为服务器返回的数据
+    .done(function(usr) {
+    //如果返回结果不为空
+    if(usr!=null){
+    $("#name").text(usr.name);
+    $("#gender").text(usr.gender);
+    $("#sign").text(usr.signature);
+    $("#icon").attr('src',usr.icon);
+    }
+    })
+    })
+    </script>
+</head>
+<body>
+<h1>个人信息：</h1>
+    <p>
+        <span>用户名：</span>
+        <span id="name"></span>
+    </p>
+<p>
+    <span>性别：</span>
+    <span id="gender"></span>
+</p>
+<p>
+    <span>个性签名：</span>
+    <span id="sign"></span>
+</p>
+<p>我的头像:</p>
+<img id="icon" src="" style="width:100px;height:100px"/>
+ 
+<div id="ImportHead">
+    <table border="0" class="frm" style="height: 35px; width: auto; padding-left: 5px;
+            padding-top: 1px;">
+        <tr style="width: 300px; height: 400px;">
+            <th>
+                选择新头像：
+            </th>
+            <td>
+                <form id="myform" action="/imageUpload" method="post" enctype="multipart/form-data">
+                    <input type="file" id="file" name="file" />
+                    <input type="submit" value="确认修改"/>
+                    <div id="image-wrap1" style="width: 300px; height: 300px; border: solid 1px lightGray">
+                    </div>
+                </form>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
