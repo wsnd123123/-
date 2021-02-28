@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/form.css">
+    <title>Document</title>
+    <style>
+        #svg3 {
+            top: 310px;
+            right: 50px;
+        }
+        #svg2 {
+            top: 185px;
+            right: 50px;
+        }
+
+        #preview{
+            width: 40px;
+            height: 40px;
+            border:1px solid yellowgreen;
+            position: absolute;
+        }
+        #headPortrait{
+            position: relative;
+            left: 50px;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div alt="" class="qq">
+        <img src="/qq.jpg" alt="">
+    </div>
+    <div class="box">
+        
+                <form id="registerForm">
+                <h1>欢迎注册QQ</h1>
+                <h3>每一天，乐在沟通</h3>
+                <span class="right">免费靓号</span>
+                <img src="" id="preview" alt="">        <!--   //////// uploadAvatar-->
+                <input type="file" name="avatar" onchange="uploadAvatar(this)" id="headPortrait">
+                <input type="text" placeholder="用户名" id="yonhu" name="username">
+                <svg t="1606825626850" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                    xmlns="http://www.w3.org/2000/svg" p-id="772" width="200" height="200" id="svg1">
+                    <path
+                        d="M243.39 534.85l251.99 187.91c11.07 8.25 13.35 23.92 5.1 34.99s-23.92 13.35-34.99 5.1L213.5 574.94c-11.07-8.25-13.35-23.92-5.1-34.99 8.26-11.07 23.92-13.35 34.99-5.1z"
+                        fill="#1afa29" p-id="773"></path>
+                    <path
+                        d="M808.33 265.33c11.4 7.79 14.32 23.35 6.52 34.75L502.33 757.1c-7.79 11.4-23.35 14.32-34.75 6.52-11.4-7.79-14.32-23.35-6.52-34.75l312.53-457.01c7.79-11.4 23.34-14.32 34.74-6.53z"
+                        fill="#1afa29" p-id="774"></path>
+                </svg>
+                <input type="text" placeholder="密码" id="mima" name="password">
+                <input type="button" id="button1"></input>
+                <input type="password" id="mima1" name="repassword" placeholder="确认密码">
+                <svg t="1606825626850" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                    xmlns="http://www.w3.org/2000/svg" p-id="772" width="200" height="200" id="svg2">
+                    <path
+                        d="M243.39 534.85l251.99 187.91c11.07 8.25 13.35 23.92 5.1 34.99s-23.92 13.35-34.99 5.1L213.5 574.94c-11.07-8.25-13.35-23.92-5.1-34.99 8.26-11.07 23.92-13.35 34.99-5.1z"
+                        fill="#1afa29" p-id="773"></path>
+                    <path
+                        d="M808.33 265.33c11.4 7.79 14.32 23.35 6.52 34.75L502.33 757.1c-7.79 11.4-23.35 14.32-34.75 6.52-11.4-7.79-14.32-23.35-6.52-34.75l312.53-457.01c7.79-11.4 23.34-14.32 34.74-6.53z"
+                        fill="#1afa29" p-id="774"></path>
+                </svg>
+                <select>
+                    <option>+86</option>
+                    <option>giao</option>
+                    <option>huohua</option>
+                </select>
+                <input type="text" placeholder="手机号码" id="shouji">
+                <input id="yzm" placeholder="短信验证码">
+                <input type="button" id="fashon" value="发送短信验证码"></input>
+                <svg t="1606825626850" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                    xmlns="http://www.w3.org/2000/svg" p-id="772" width="200" height="200" id="svg3">
+                    <path
+                        d="M243.39 534.85l251.99 187.91c11.07 8.25 13.35 23.92 5.1 34.99s-23.92 13.35-34.99 5.1L213.5 574.94c-11.07-8.25-13.35-23.92-5.1-34.99 8.26-11.07 23.92-13.35 34.99-5.1z"
+                        fill="#1afa29" p-id="773"></path>
+                    <path
+                        d="M808.33 265.33c11.4 7.79 14.32 23.35 6.52 34.75L502.33 757.1c-7.79 11.4-23.35 14.32-34.75 6.52-11.4-7.79-14.32-23.35-6.52-34.75l312.53-457.01c7.79-11.4 23.34-14.32 34.74-6.53z"
+                        fill="#1afa29" p-id="774"></path>
+                </svg>
+                <input type="button" id="registerBtn" value="注册">
+                <p class="switch">已有账号? 点我去登录</p>
+                </form>
+            
+</body>
+<script src="/jquery-3.5.1.js"></script>
+<script src="/ajax.js"></script>
+<script>
+
+    //切换登陆
+    
+    $("p")[0].onclick = function () {
+        location.href = '/singin';
+    }
+
+    let isValidUsername = false;
+    let loadingIndex;
+
+    let registerBtn = $("#registerBtn");
+    let theForm = $("#theForm");
+
+    // 失去焦点校验用户名唯一性
+    let userEle = $("input[name='username']");
+    userEle.on('blur', function () {
+        // 发送ajax请求
+        let username = $(this).val();
+        $.ajax({
+            type: "get",
+            url: "http://127.0.0.1:4000/userUnique",
+            data: { username: username },
+            dataType: 'json',
+            success: function (res) {
+                let { errcode, message } = res;
+                if (errcode === 0) {
+                    // 可用
+                    isValidUsername = true;
+                    alert("可用")
+                } else {
+                    // 不可用
+                    isValidUsername = false;
+                    alert("不可用");
+                }
+
+            },
+
+        })
+    })
+
+    // 1. 给注册按钮绑定单击事件
+    registerBtn.on('click', function () {
+        // 2.获取用户信息
+        let username = $.trim($("input[name='username']").val());
+        let password = $.trim($("input[name='password']").val());
+        let repassword = $.trim($("input[name='repassword']").val());
+        // 3.前端校验（提高用户体验、减轻服务器压力） 服务端验证（数据的安全性）
+        if (username === '' || password === '' || repassword === '') {
+            alert('注册信息不能为空');
+            return;
+        }
+        
+        if (password !== repassword) {
+            alert.msg('两次密码不一致')
+            return;
+        }
+    })
+
+ // 用户选择了头像进行ajax上传文件
+ let avatarPath = ''; // 记录上传图片的地址
+    function uploadAvatar(fileEle){
+        let fileBinary = fileEle.files[0];
+        let formData = new FormData();
+        if(fileBinary.size !== 0){
+            // 说明上传了文件，则触发ajax，调用后端接口上传文件
+            formData.append('avatar',fileBinary)
+            $.ajax({
+                type:"post",
+                url:"/upload2",
+                data:formData,
+                processData: false, // 不需要对数据进行处理
+                contentType: false, // 不需要指定内容类型
+                dataType:"json"
+            }).then(res=>{
+               let {path} = res;
+               if(path){
+                   // 预览图片
+                    $("#preview").attr('src',path) 
+                    // 保存上传成功后的路径
+                    avatarPath=path;
+               }
+            })
+        }
+    }
+
+
+    // 点击注册时触发
+    $("#registerBtn").on('click',()=>{
+        // 1.收集数据
+        let form = document.getElementById('registerForm')
+        // let formData = new FormData(form);
+        // formData.delete('avatar')
+        let data = $(form).serialize();
+        // 拼接头像的路径
+        data += `&avatar=${avatarPath}`
+        // 2.校验
+        // 3.发送ajax请求
+        $.post('/addUser',data,(res)=>{
+            let {errcode,message} = res;
+            if(errcode === 0){
+                alert(message);
+                location.href = '/singin'
+            }else{
+                alert(message);
+            }
+
+            
+        },'json')
+    })
+
+
+    var clickNum = 0;
+    button1.onclick = function () {
+        clickNum++;
+        if (clickNum % 2 !== 0) {
+            mima.type = "password";
+            button1.style.backgroundImage = "url(1.png)";
+        }
+        else {
+            mima.type = "text";
+            button1.style.backgroundImage = "url(2.png)";
+        }
+    }
+    $("#yonhu").blur(function () {
+        var yhm = /\w{5,}$/g;
+        if (yhm.test(yonhu.value)) {
+            svg1.style.display = "block";
+            yonhu.style.borderColor = "";
+        } else {
+            alert('用户名长度不能小于5位，且不能有特殊符号')
+            svg1.style.display = "none";
+            yonhu.style.borderColor = "red";
+        }
+    })
+
+    $("#mima").blur(function () {
+        var mm = /\w{8}$/g;
+        if (mm.test(mima.value)) {
+            svg2.style.display = "block";
+            mima.style.borderColor = "";
+            button1.style.right = 80 + "px";
+        } else {
+            alert('密码最少为8位')
+            svg2.style.display = "none";
+            mima.style.borderColor = "red";
+            button1.style.right = 50 + "px";
+        }
+    })
+
+    $("#mima1").blur(function () {
+        var mm = /\w{8}$/g;
+        if (!mm.test(mima1.value) || mima1.value !== mima.value) {
+            mima1.style.borderColor = "red";
+        } else {
+            mima1.style.borderColor = "";
+        }
+    })
+
+    $("#shouji").focus(function () {
+        $("#yzm,#fashon").show();
+    })
+
+    $("#shouji").blur(function () {
+        var shoujile = document.getElementById('shouji').value;
+        var sjhm = /^1[3-9]\d{9}$/g;
+        if (sjhm.test(shoujile)) {
+            svg3.style.display = "block";
+            shouji.style.borderColor = "";
+        } else {
+            svg3.style.display = "none";
+            shouji.style.borderColor = "red";
+            $("#yzm,#fashon").hide();
+        }
+    })
+
+    var yz = Math.floor((Math.random() * 9999) + 1000), dinshiqi, dinshiqi1, num = 60;
+    dinshiqi = setInterval(function () {
+        yz = yz + 3;
+        if (yz >= 10000) {
+            yz = 1000
+        }
+    }, 1);
+    $("#fashon")[0].onclick = function () {
+        fashon.disabled = true;
+
+        dinshiqi1 = setInterval(function () {
+            num--;
+            fashon.value = "重新发送(" + num + ")";
+            if (num == 0) {
+                fashon.value = "发送短信验证码";
+                num = 60;
+                fashon.disabled = false;
+                clearTimeout(dinshiqi1);
+            }
+        }, 1000);
+
+        setTimeout(function () {
+            clearTimeout(dinshiqi);
+            alert("您的短信验证码为" + yz);
+        }, Math.floor((Math.random() * 5000) + 2000));
+    }
+
+    registerBtn.onclick = function () {
+        if (yzm.value != yz) {
+            yzm.style.borderColor = "red";
+        }
+    }
+
+</script>
+
+</html>

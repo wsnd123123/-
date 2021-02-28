@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/form.css">
+    <script src="jquery-3.5.1.js"></script>
+    <style>
+        #svg3 {
+            top: 245px;
+            right: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <div alt="" class="qq">
+        <img src="/qq.jpg" alt="">
+    </div>
+    <div class="box">
+        <form id="loginForm">
+            <h1>欢迎登录QQ</h1>
+            <h3>每一天，乐在沟通</h3>
+            <span class="right">免费靓号</span>
+            <input type="text" placeholder="用户名" id="yonhu" name="signInName">
+            <svg t="1606825626850" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                p-id="772" width="200" height="200" id="svg1">
+                <path
+                    d="M243.39 534.85l251.99 187.91c11.07 8.25 13.35 23.92 5.1 34.99s-23.92 13.35-34.99 5.1L213.5 574.94c-11.07-8.25-13.35-23.92-5.1-34.99 8.26-11.07 23.92-13.35 34.99-5.1z"
+                    fill="#1afa29" p-id="773"></path>
+                <path
+                    d="M808.33 265.33c11.4 7.79 14.32 23.35 6.52 34.75L502.33 757.1c-7.79 11.4-23.35 14.32-34.75 6.52-11.4-7.79-14.32-23.35-6.52-34.75l312.53-457.01c7.79-11.4 23.34-14.32 34.74-6.53z"
+                    fill="#1afa29" p-id="774"></path>
+            </svg>
+            <input type="text" placeholder="密码" id="mima" name="signInPassword">
+            <input type="button" id="button1"></input>
+            <svg t="1606825626850" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                p-id="772" width="200" height="200" id="svg2">
+                <path
+                    d="M243.39 534.85l251.99 187.91c11.07 8.25 13.35 23.92 5.1 34.99s-23.92 13.35-34.99 5.1L213.5 574.94c-11.07-8.25-13.35-23.92-5.1-34.99 8.26-11.07 23.92-13.35 34.99-5.1z"
+                    fill="#1afa29" p-id="773"></path>
+                <path
+                    d="M808.33 265.33c11.4 7.79 14.32 23.35 6.52 34.75L502.33 757.1c-7.79 11.4-23.35 14.32-34.75 6.52-11.4-7.79-14.32-23.35-6.52-34.75l312.53-457.01c7.79-11.4 23.34-14.32 34.74-6.53z"
+                    fill="#1afa29" p-id="774"></path>
+            </svg>
+            <select>
+                <option>+86</option>
+                <option>giao</option>
+                <option>huohua</option>
+            </select>
+            <input type="text" placeholder="手机号码" id="shouji">
+            <input id="yzm" placeholder="短信验证码">
+            <input type="button" id="fashon" value="发送短信验证码"></input>
+            <div class="tip">
+
+            </div>
+            <button id="loginBtn">登录</button>
+            <p class="switch">没有账号? 注册一个</p>
+            <svg t="1606825626850" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                p-id="772" width="200" height="200" id="svg3">
+                <path
+                    d="M243.39 534.85l251.99 187.91c11.07 8.25 13.35 23.92 5.1 34.99s-23.92 13.35-34.99 5.1L213.5 574.94c-11.07-8.25-13.35-23.92-5.1-34.99 8.26-11.07 23.92-13.35 34.99-5.1z"
+                    fill="#1afa29" p-id="773"></path>
+                <path
+                    d="M808.33 265.33c11.4 7.79 14.32 23.35 6.52 34.75L502.33 757.1c-7.79 11.4-23.35 14.32-34.75 6.52-11.4-7.79-14.32-23.35-6.52-34.75l312.53-457.01c7.79-11.4 23.34-14.32 34.74-6.53z"
+                    fill="#1afa29" p-id="774"></path>
+            </svg>
+        </form>
+    </div>
+</body>
+
+<script>
+
+//切换注册
+$("p")[0].onclick = function(){
+    location.href = '/register';
+}
+
+// 判断用户是否有登录
+let userInfo = JSON.parse( localStorage.getItem('userInfo') );
+   if(userInfo){
+       // 如果用户有登录，则直接进入到首页
+       location.href = '/index';
+   }
+
+    let tipEle = $(".tip");
+    $("#loginBtn").on('click',function(){
+        console.log( $("#loginForm").serialize() )
+    
+        //1.获取到用户名和密码
+        let signInName = $("input[name='signInName']").val();
+        let signInPassword = $("input[name='signInPassword']").val();
+        //2.数据校验
+        if($.trim(signInName) == '' || $.trim(signInPassword) == ''){
+            tipEle.html('用户名和密码不能为空').addClass('fail');
+            return;
+        }
+        //3.校验成功-发送ajax请求-失败给用户提示
+        tipEle.html('')
+        // loading提示
+        let _this = $(this);
+        _this.val('登录中...').prop('disabled',true);
+        let xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function(){
+            if(this.readyState === 4 && this.status === 200){
+                // 按钮恢复可用
+                _this.val('登录').prop('disabled',false);
+                //4.根据响应的json数据做响应的业务逻辑
+                let data = JSON.parse(this.responseText);
+                let {errcode,message,userInfo} = data;
+                if(errcode == 0 && svg1.style.display == "block" && svg2.style.display == "block" && svg3.style.display == "block" && yzm.value == yz){
+                    // 把用户的信息存储到本地存储
+                    localStorage.setItem( 'userInfo',JSON.stringify(userInfo) )
+                    // 成功 跳转到首页 /index
+                    location.href = '/index';
+                }else{
+                    // alert(message)
+                    tipEle.html(message).removeClass('success').addClass('fail')
+                    // tipEle[0].innerHTML = message
+                    // tipEle[0].className = 'fail'
+                }
+            }
+        }
+        xhr.open('post','/checkUser',true)
+        xhr.setRequestHeader('Content-type','application/x-www-form-urlencoded');
+        // 序列化表单项的数据为查询字符串，表单项必须有name属性
+        let params = $("#loginForm").serialize();
+        xhr.send(params)
+        
+    })
+
+
+    var clickNum = 0;
+    button1.onclick = function () {
+        clickNum++;
+        if (clickNum % 2 !== 0) {
+            mima.type = "password";
+            button1.style.backgroundImage = "url(1.png)";
+        }
+        else {
+            mima.type = "text";
+            button1.style.backgroundImage = "url(2.png)";
+        }
+    }
+    $("#yonhu").blur(function () {
+        var yonhule = document.getElementById('yonhu').value;
+        var yhm = /\w{5,}$/g;
+        if (yhm.test(yonhule)) {
+            svg1.style.display = "block";
+            yonhu.style.borderColor = "";
+        } else {
+            svg1.style.display = "none";
+            yonhu.style.borderColor = "red";
+        }
+    })
+
+    $("#mima").blur(function () {
+        var mimale = document.getElementById('mima').value;
+        var mm = /\w{8}$/g;
+        if (mm.test(mimale)) {
+            svg2.style.display = "block";
+            mima.style.borderColor = "";
+            button1.style.right = 80 + "px";
+        } else {
+            svg2.style.display = "none";
+            mima.style.borderColor = "red";
+            button1.style.right = 50 + "px";
+        }
+    })
+            //focus获得焦点
+    $("#shouji").focus(function () {
+        $("#yzm,#fashon").show();
+    })
+            //blur失去焦点
+    $("#shouji").blur(function () {
+        var shoujile = document.getElementById('shouji').value;
+        var sjhm = /^1[3-9]\d{9}$/g;
+        if (sjhm.test(shoujile)) {
+            svg3.style.display = "block";
+            shouji.style.borderColor = "";
+        } else {
+            svg3.style.display = "none";
+            shouji.style.borderColor = "red";
+            $("#yzm,#fashon").hide();
+        }
+    })
+    
+    var yz = Math.floor((Math.random() * 9999) + 1000),dinshiqi,dinshiqi1,num = 60;
+    dinshiqi = setInterval(function () {
+            yz = yz + 3;
+            if (yz >= 10000) {
+                yz = 1000
+            }
+        }, 1);
+    $("#fashon")[0].onclick = function () {
+        fashon.disabled = true;
+        
+        dinshiqi1 = setInterval(function () {
+            num--;
+            fashon.value = "重新发送(" + num + ")";
+            if (num == 0) {
+                fashon.value = "发送短信验证码";
+                num = 60;
+                fashon.disabled = false;
+                clearTimeout(dinshiqi1);
+            }
+        }, 1000);
+
+        setTimeout(function () {
+            clearTimeout(dinshiqi);
+            alert("您的短信验证码为" + yz);
+        }, Math.floor((Math.random() * 5000) + 2000));
+    }
+
+    loginBtn.onclick = function () {
+        if(yzm.value != yz){
+        yzm.style.borderColor = "red";
+    }
+    }
+
+
+</script>
+
+</html>

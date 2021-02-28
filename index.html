@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/swiper-3.4.2.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            overflow: hidden;
+        }
+
+        .oneBody {
+            width: 1300px;
+            height: 588px;
+            margin: auto;
+            margin-top: 30px;
+        }
+
+        .myArticle,
+        .twoBody,
+        .recommend {
+            position: relative;
+            overflow: auto;
+            background-color: rgb(250, 250, 250);
+        }
+
+        .user {
+            width: 180px;
+            height: 180px;
+        }
+
+        .informationBar {
+            width: 260px;
+            height: 220px;
+            display: flex;
+            align-items: center;
+            background-color: rgb(250, 250, 250);
+        }
+        .swiper-slide{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .swiper-slide img{
+            width: 50px;
+            height: 50px;
+        }
+        #searchBar {
+            width: 800px;
+            height: 80px;
+            position: absolute;
+            top: -50px;
+            left: 300px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .myArticle {
+            width: 260px;
+            height: 360px;
+        }
+
+        .twoBody {
+            width: 800px;
+            height: 586px;
+            left: 265px;
+            bottom: 590px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /*定义滚动条高宽及背景*/
+        .twoBody::-webkit-scrollbar {
+            width: 0;
+        }
+        .twoBody .top{
+            height: 100px;
+        }
+        .twoBody div {
+            width: 700px;
+            height: 60px;
+        }
+
+        .twoBody div img {
+            width: 80px;
+            height: 50px;
+        }
+
+        .recommend {
+            width: 222px;
+            height: 586px;
+            float: right;
+            bottom: 1180px;
+        }
+    </style>
+
+
+</head>
+
+<body>
+    <div id="searchBar">
+        <input type="text" id="searchInput">
+    </div>
+    <div class="oneBody">
+        <div class="informationBar">
+            <div class="user">
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide"><img src="touxian.jpg" alt="">
+                            <span id="name"></span>
+                        <span>该人很懒,并没有留下什么</span>
+                        </div>
+                        <div class="swiper-slide">
+                            <button id="logout">注销账号</button>
+                        </div>
+                        <div class="swiper-slide">待开发</div>
+                        <div class="swiper-slide">待开发</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="myArticle">
+            我的文章
+        </div>
+        <div class="twoBody">
+            <div class="top"><img src="fenmian.jpg">震惊!某男子尽在猪圈...</div>
+            <div><img src="fenmian.jpg">天才的文章</div>
+            <div><img src="fenmian.jpg">天才的文章</div>
+            <div><img src="fenmian.jpg">天才的文章</div>
+            <div><img src="fenmian.jpg">小明的文章</div>
+            <div><img src="fenmian.jpg">小明的文章</div>
+            <div><img src="fenmian.jpg">小明的文章</div>
+            <div><img src="fenmian.jpg">小明的文章</div>
+            <div><img src="fenmian.jpg">小明的文章</div>
+            <div><img src="fenmian.jpg">小明的文章</div>
+            <div><img src="fenmian.jpg">小明的文章</div>
+            <div><img src="fenmian.jpg">小明的文章</div>
+            <div><img src="fenmian.jpg">小明的文章</div>
+            <div><img src="fenmian.jpg">小明的文章</div>
+            <div><img src="fenmian.jpg">小明的文章</div>
+            <div><img src="fenmian.jpg">小红的文章</div>
+            <div><img src="fenmian.jpg">小红的文章</div>
+            <div><img src="fenmian.jpg">小红的文章</div>
+            <div><img src="fenmian.jpg">小红的文章</div>
+        </div>
+        <div class="recommend">
+            推荐阅读
+        </div>
+
+    </div>
+</body>
+<script src="/js/jquery-3.5.1.js"></script>
+<script src="/js/swiper-3.4.2.min.js"></script>
+<script language="javascript">
+
+    var mySwiper = new Swiper('.swiper-container', {
+        effect: 'cube',
+        cube: {
+            slideShadows: true,
+            shadow: true,
+            shadowOffset: 100,
+            shadowScale: 0.6
+        }
+    })
+    
+    let userInfo = JSON.parse( localStorage.getItem('userInfo') );
+
+if(!userInfo){
+    // 没有登录，打回登录页面
+    location.href = '/singin';
+}else{
+  document.getElementById('name').innerHTML = userInfo.signInName;
+}
+
+ $("#logout").on('click',function(){
+     if(confirm('确认退出?')){
+         // 清除当前网站的所有的用户信息
+         localStorage.clear()
+         // 跳转到登录页面
+         location.href = '/singin'
+     }
+ })
+</script>
+
+
+</html>
